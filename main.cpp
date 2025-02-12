@@ -1,4 +1,5 @@
 #include <windows.h>
+#include <psapi.h>
 
 #include <stdio.h>
 
@@ -48,6 +49,13 @@ void load_asi(){
 }
 
 int __attribute__((constructor)) init(){
+	char file_name[1024];
+	DWORD file_name_size = GetProcessImageFileNameA(GetCurrentProcess(), file_name, sizeof(file_name));
+	if(file_name_size == 0){
+		LOG("%s: failed fetching process file name\n", __func__);
+	}
+	LOG("%s: initializing on program %s\n", __func__, file_name);
+
 	load_syms();
 	load_asi();
 	return 0;
