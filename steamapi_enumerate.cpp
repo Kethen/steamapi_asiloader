@@ -22,6 +22,10 @@ BOOL CALLBACK EnumSymProc(
     ULONG SymbolSize,      
     PVOID UserContext)
 {
+	if(strcmp("EntryPoint", pSymInfo->Name) == 0){
+		return TRUE;
+	}
+
 	std::vector<std::string> &syms = *(std::vector<std::string> *)(UserContext);
 	syms.push_back(std::string(pSymInfo->Name));
 	return TRUE;
